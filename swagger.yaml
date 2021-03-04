@@ -1,0 +1,452 @@
+
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "AXIBO OPENSOURCE API"
+  termsOfService: "https://axibo.com"
+  contact:
+    email: "sohaibalemara@roboteurs.com"
+host: "10.42.0.1:2200"
+basePath: "/v1"
+tags:
+- name: "System"
+  description: "The status of everything related AXIBO controller"
+  externalDocs:
+    description: "Find out more"
+    url: "https://www.axibo.com"
+- name: "Images"
+  description: "Routes that retrives images with timestamps from AXIBO controller"
+  externalDocs:
+    description: "Find out more"
+    url: "https://www.axibo.com"
+    
+- name: "Motion"
+  description: "Routes that control AXIBO movements"
+  externalDocs:
+    description: "Find out more"
+    url: "https://www.axibo.com"
+
+schemes:
+- "http"
+paths:
+  /system/status:
+    get:
+      tags:
+      - "System"
+      summary: "Retreive the entire status of AXIBO"
+      description: ""
+      operationId: "getProgress"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+       
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/systemMsg"
+        "405":
+          description: "Invalid input"
+    
+  /system/wifiInfo:
+    get:
+      tags:
+      - "System"
+      summary: "Retreive AXIBO current wifi connection"
+      operationId: "getCurrentWifi"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/Wifi"
+        "405":
+          description: "Invalid input"
+    
+  /system/wifi:
+    get:
+      tags:
+      - "System"
+      summary: "List all the available and saved WIFIs connections"
+      operationId: "listWifis"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/WifiList"
+        "405":
+          description: "Invalid input"
+    put:
+      tags:
+      - "System"
+      summary: "Connect to WIFI network"
+      description: ""
+      operationId: "setWifi"
+      parameters:
+      - in: body
+        name: wifiConfig
+        description: "BSSID, SSID, and Password"
+        schema:
+          $ref: "#/definitions/ConnectWifi"
+      consumes:
+      - "application/json"
+      
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "405":
+          description: "Invalid input"
+      
+    delete:
+      tags:
+      - "System"
+      summary: "Delete WIFI network from the saved list"
+      description: ""
+      operationId: "deleteWifi"
+      parameters:
+      - in: body
+        name: wifiName
+        description: "Status object that needs to be added to the database"
+        schema:
+         type: object
+         properties: 
+          ssid:
+            type: "string"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "405":
+          description: "Invalid input"
+  
+  /imaging/cam:
+   get:
+    tags:
+    - "Images"
+    summary: "Retrives a raw image with a timestamp"
+    operationId: "getRawImage"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    responses:
+      "200":
+        description: "JSON object with the following response"
+        schema:
+          $ref: "#/definitions/imageRes"
+      "405":
+        description: "Invalid input"
+    
+  /imaging/pose:
+    get:
+      tags:
+      - "Images"
+      summary: "Retrives an pose overlay image with a timestamp"
+      operationId: "getPoseImage"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/imageRes"
+        "405":
+          description: "Invalid input"
+  /direct-control/config:
+    put:
+      tags:
+      - "Motion"
+      summary: "Move AXIBO to relative position"
+      operationId: "configMotors"
+      parameters:
+      - in: body
+        name: wifiConfig
+        description: "Specify the position and the speed to move AXIBO"
+        schema:
+          $ref: "#/definitions/motorConfig"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "405":
+          description: "Invalid input"
+    
+  /direct-control/home:
+    put:
+      tags:
+      - "Motion"
+      summary: "Home AXIBO to set defualt limits"
+      operationId: "setHoming"
+      parameters:
+      - in: body
+        name: wifiConfig
+        description: "Home AXIBO motors"
+        schema:
+          $ref: "#/definitions/motorHome"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "405":
+          description: "Invalid input"
+  
+  /direct-control/move-absolute:
+    put:
+      tags:
+      - "Motion"
+      summary: "Move AXIBO to absolute position"
+      operationId: "moveAbsolute"
+      parameters:
+      - in: body
+        name: wifiConfig
+        description: "Specify the position and the speed to move AXIBO"
+        schema:
+            $ref: "#/definitions/controlCMD"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "405":
+          description: "Invalid input"
+  
+  /direct-control/move-relative:
+    put:
+      tags:
+      - "Motion"
+      summary: "Move AXIBO to relative position"
+      operationId: "moveRelative"
+      parameters:
+      - in: body
+        name: wifiConfig
+        description: "Specify the position and the speed to move AXIBO"
+        schema:
+          $ref: "#/definitions/controlCMD"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "405":
+          description: "Invalid input"
+          
+  
+          
+  /direct-control/motion-status:
+    get:
+      tags:
+      - "Motion"
+      summary: "Move AXIBO to relative position"
+      operationId: "getMotionStatus"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "JSON object with the following response"
+          schema:
+            type: "object"
+            properties:
+              panHomed:
+                type: "boolean"
+              tiltHomed:
+                type: "boolean"
+              panPos:
+                type: "integer"
+                example: 66
+              tiltPos:
+                type: "integer"
+                example: 66
+        "405":
+          description: "Invalid input"
+  
+definitions:
+  motorConfig:
+    type: "object"
+    properties:
+      panAccel:
+        type: "number"
+      panDeaccel:
+        type: "number"
+      tiltAccel:
+        type: "number"
+      tiltDeaccel:
+        type: "number"
+      panMin:
+        type: "number"
+      panMax:
+        type: "number"
+      tiltMin:
+        type: "number"
+      tiltMax:
+        type: "number"
+      
+  motorHome:
+    type: "object"
+    properties:
+      pan:
+        type: "boolean"
+      tilt:
+        type: "boolean"
+  
+  controlCMD:
+    type: "object"
+    properties:
+      position:
+        type: "object"
+        properties:
+          pan:
+            type: "array"
+            items:
+              type: "number"
+          tilt:
+            type: "array"
+            items:
+              type: "number"
+              
+      velocity:
+        type: "object"
+        properties:
+          pan:
+            type: "array"
+            items: 
+              type: "number"
+          tilt:
+            type: "array"
+            items: 
+              type: "number"
+  
+  imageRes:
+    type: "object"
+    properties:
+      timestamp:
+        type: "integer"
+      image:
+        type: "string"
+    
+  ConnectWifi:
+    type: "object"
+    properties:
+      bssid:
+        type: "string"
+      ssid:
+        type: "string"
+      password:
+        type: "string"
+      
+  WifiList:
+    type: "object"
+    properties:
+      savedWifiList:
+        type: "array"
+        items:
+          type: "string"
+      availableWifis:
+        type: "array"
+        items:
+          type: "string"
+          
+  Wifi:
+    type: "object"
+    properties:
+      accessPoint:
+        type: "boolean"
+      networkName:
+        type: "string"
+  Errors:
+    type: "object"
+    properties:
+      id:
+        type: integer
+      error:
+        type: "string"
+  systemMsg:
+    type: "object"
+    required:
+    - "timeStamp"
+    - "batteryStatus"
+    - "backendErrors"
+    - "condition"
+    properties:
+      operation:
+        type: "string"
+        description: "Controller condition "
+        enum:
+        - "in moition"
+        - "tracking"
+        - "detecting"
+        - "idle"
+      progress:
+        type: "integer"
+        example: 66
+      motionStatus:
+        type: "object"
+        properties:
+          panHomed:
+            type: "boolean"
+          tiltHomed:
+            type: "boolean"
+          panPos:
+            type: "integer"
+            example: 66
+          tiltPos:
+            type: "integer"
+            example: 66
+      wifi:
+        $ref: "#/definitions/Wifi"
+      timeStamp:
+        type: "integer"
+        example: 123131231231231
+      batteryStatus:
+        type: "integer"
+        example: 59
+      backendErrors:
+        $ref: "#/definitions/Errors"
+      
+ 
+  ApiResponse:
+    type: "object"
+    properties:
+      status:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"

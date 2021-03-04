@@ -1,0 +1,241 @@
+{
+  "info": {
+    "_postman_id": "43d0c17c-a62d-4727-9007-3839ea183236",
+    "name": "axibo_opensource",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "AI routes",
+      "item": [
+        {
+          "name": "Start Pose Detecting",
+          "id": "e3fbe17d-a996-4721-a60a-0e4afeaf7d22",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"state\":true,\n    \"type\":\"small\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "http://{{base_url}}/v1/ai/pose/start"
+          },
+          "response": []
+        }
+      ],
+      "id": "70f2a866-4617-443e-ab45-3deb61dd0205"
+    },
+    {
+      "name": "Motion routes",
+      "item": [
+        {
+          "name": "Configure Motion",
+          "id": "3e9e0674-e90d-414c-8651-e931b145ef68",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"panAccel\":1,\n  \"panDeaccel\":1,\n  \"tiltAccel\":1,\n  \"tiltDeaccel\":1,\n  \"panMax\": 30,\n  \"panMin\":30,\n  \"tiltMax\": 30,\n  \"tiltMin\":30\n  \n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "http://{{base_url}}/v1/direct-control/config"
+          },
+          "response": []
+        },
+        {
+          "name": "Motors Homing",
+          "id": "9b400236-33bc-47b4-93c1-4b02d83c6d83",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": " {\n    \"pan\": true,\n    \"tilt\": true\n  }",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "http://{{base_url}}/v1/direct-control/home"
+          },
+          "response": []
+        },
+        {
+          "name": "Move absolute",
+          "id": "baade3bb-8063-4809-8fca-b14ee0e6afa6",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"position\": {\n    \"pan\": [10,20,0,-20],\n    \"tilt\": [0]\n  },\n  \"velocity\": {\n    \"pan\": [10,10,10,10],\n    \"tilt\": [10]\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "http://{{base_url}}/v1/direct-control/move-absolute"
+          },
+          "response": []
+        },
+        {
+          "name": "Move Relative",
+          "id": "561d5261-7d23-42f7-9daa-b1fa18d4066e",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "user-agent": true,
+              "connection": true,
+              "accept-encoding": true,
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"position\": {\n    \"pan\": [0],\n    \"tilt\": [0]\n  },\n  \"velocity\": {\n    \"pan\": [5],\n    \"tilt\": [0]\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "http://{{base_url}}/v1/direct-control/move-relative"
+          },
+          "response": []
+        },
+        {
+          "name": "Motion Status",
+          "id": "a21cb7c5-cdda-4f73-b0a4-aa5fc0d43ad7",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{base_url}}/v1/direct-control/motion-status"
+          },
+          "response": []
+        }
+      ],
+      "id": "5742e994-a562-42b2-adc5-953f4fa88ff2"
+    },
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "System Status",
+          "id": "cfa626c5-5e09-4ffb-98b5-cd59438996e8",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{base_url}}/v1/system/status"
+          },
+          "response": []
+        },
+        {
+          "name": "WIFI Info",
+          "id": "e6c24d5c-90bd-4072-9925-65d18791e368",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{base_url}}/v1/system/wifiInfo"
+          },
+          "response": []
+        },
+        {
+          "name": "List WIFIs",
+          "id": "8c6b6444-a43d-48d6-a3cd-348d6452c485",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://192.168.2.32:9000/v1/system/wifi"
+          },
+          "response": []
+        },
+        {
+          "name": "Connect to WIFI",
+          "id": "e56f8b5d-0fda-491d-b39d-c06f5699db1d",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bssid\":\"98:52:4A:B4:07:B2\",\n    \"ssid\": \"Zinia\u2019s iPhone\",\n    \"password\":\"aASsSAs\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "http://{{base_url}}/v1/system/wifi"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete WIFI",
+          "id": "765642cf-1464-445e-bf95-f3a3d444c374",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ssid\": \"BELL630_Ext\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "http://{{base_url}}/v1/system/wifi"
+          },
+          "response": []
+        },
+        {
+          "name": "Webscokets Routes",
+          "id": "e882d431-fb83-422c-9200-8d343cf1828e",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{base_url}}/v1/websocket/Info"
+          },
+          "response": []
+        }
+      ],
+      "id": "b0acff6d-e162-4259-916a-9477bf08c58a"
+    },
+    {
+      "name": "Images",
+      "item": [
+        {
+          "name": "Get Camera Image",
+          "id": "f6a4dcd5-d22a-49ac-b4e8-80fb5c2dbbc8",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{base_url}}/v1/imaging/cam"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pose Image",
+          "id": "323dffee-f5ec-4c9c-a63b-6f8d90bfa14b",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://{{base_url}}/v1/imaging/pose"
+          },
+          "response": []
+        }
+      ],
+      "id": "4a52e010-103e-40b3-8335-bbd0f72193d8"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "267faa03-bb5a-4c4e-82bf-b11361b8020c",
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "c8335b8d-4583-4df9-842a-27f4af1b3a38",
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "a5908563-9f9d-4232-b9c3-f62fca7396f7",
+      "key": "base_url",
+      "value": "10.42.0.1:2200"
+    }
+  ]
+}
